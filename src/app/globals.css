@@ -1,0 +1,21 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #0a0a0b;
+  --color-panel: #141417;
+  --color-border: #27272a;
+  --color-accent: #34d399;
+  --color-danger: #f87171;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: #e4e4e7;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+code,
+pre {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+}

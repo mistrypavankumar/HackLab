@@ -12,6 +12,18 @@ interface Comment {
 
 const PAYLOAD = `<img src=x onerror="window.dispatchEvent(new CustomEvent('hacklab-xss'))">`;
 
+// A per-browser id so a visitor only sees (and is affected by) their own stored
+// payloads — keeps the public demo from XSS-ing other people.
+function getClientId(): string {
+  if (typeof window === 'undefined') return 'anon';
+  let id = window.localStorage.getItem('hacklab:client');
+  if (!id) {
+    id = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    window.localStorage.setItem('hacklab:client', id);
+  }
+  return id;
+}
+
 export function StoredXssLab() {
   const [mode, setMode] = useState<LabMode>('vulnerable');
   const [comments, setComments] = useState<Comment[]>([]);
@@ -19,7 +31,7 @@ export function StoredXssLab() {
   const [fired, setFired] = useState(false);
 
   const load = useCallback(async () => {
-    const res = await fetch(`/api/labs/stored-xss?mode=${mode}`);
+    const res = await fetch(`/api/labs/stored-xss?mode=${mode}&client=${getClientId()}`);
     const data = (await res.json()) as { comments: Comment[] };
     setComments(data.comments);
   }, [mode]);
@@ -39,7 +51,7 @@ export function StoredXssLab() {
     await fetch('/api/labs/stored-xss', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ author: 'attacker', body }),
+      body: JSON.stringify({ author: 'attacker', body, client: getClientId() }),
     });
     setBody('');
     await load();

@@ -29,7 +29,8 @@ export function seed(db: Database.Database = getDb()): void {
     CREATE TABLE comments (
       id INTEGER PRIMARY KEY,
       author TEXT NOT NULL,
-      body TEXT NOT NULL
+      body TEXT NOT NULL,
+      client TEXT NOT NULL DEFAULT 'seed'
     );
   `);
 
@@ -48,7 +49,7 @@ export function seed(db: Database.Database = getDb()): void {
   insertInvoice.run(103, 3, 88.0, 'Bob — hosting bill');
 
   const insertComment = db.prepare(
-    'INSERT INTO comments (id, author, body) VALUES (?, ?, ?)',
+    "INSERT INTO comments (id, author, body, client) VALUES (?, ?, ?, 'seed')",
   );
   insertComment.run(1, 'alice', 'First! Loving these labs.');
   insertComment.run(2, 'bob', 'The XSS one got me good.');

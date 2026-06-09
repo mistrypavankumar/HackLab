@@ -6,7 +6,7 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'HackLab — Learn Web Security by Breaking It',
   description:
-    'Hands-on, localhost-only labs that teach developers how common web vulnerabilities work — and how to fix them.',
+    'Hands-on labs that teach developers how common web vulnerabilities work — and how to fix them. An intentionally-vulnerable public learning demo.',
 };
 
 export default function RootLayout({
@@ -19,7 +19,7 @@ export default function RootLayout({
   // element's own attributes only.
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body suppressHydrationWarning>
         <SafetyBanner />
         <header className="border-b border-border">
           <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
